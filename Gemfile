@@ -12,6 +12,8 @@ end
 
 gem 'jquery-rails'
 
+gem 'backbone-support'
+
 group :test do
   gem 'cucumber-rails', require: false
 end
@@ -22,4 +24,5 @@ group :test, :development do
   gem 'database_cleaner'
   gem 'factory_girl_rails', '~> 4.2.1'
   gem 'capybara-webkit'
+  gem 'jasminerice'
 end

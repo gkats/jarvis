@@ -1,0 +1,1 @@
+class Jarvis.Collections.Expenses extends Backbone.Collection
