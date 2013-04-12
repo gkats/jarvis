@@ -7,4 +7,11 @@ describe 'Main page' do
     expenses = JSON.parse page.find('#main')['data-expenses']
     expenses.should have(1).item
   end
+
+  it 'bootstraps the client side app', js: true do
+    visit root_path
+    jarvis = page.evaluate_script('window.Jarvis')
+    expenses = jarvis['Collections']['Expenses']
+    pending
+  end
 end

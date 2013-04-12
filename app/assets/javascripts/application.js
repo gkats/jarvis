@@ -8,6 +8,7 @@
 //= require backbone-support
 //= require jarvis
 //
+//= require_tree ../templates
 //= require_tree ./collections
 //= require_tree ./routers
 //= require_tree ./views

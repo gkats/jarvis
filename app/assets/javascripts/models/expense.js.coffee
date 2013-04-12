@@ -1,0 +1,1 @@
+class Jarvis.Models.Expense extends Backbone.Model

@@ -1,4 +1,7 @@
 <%= content_tag 'section', '', id: 'main', data: { expenses: @expenses } %>
 
 <script type="text/javascript">
+  jQuery(function() {
+    Jarvis.initialize($('#main').data());
+  });
 </script>

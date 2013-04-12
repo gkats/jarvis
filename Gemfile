@@ -14,6 +14,8 @@ gem 'jquery-rails'
 
 gem 'backbone-support'
 
+gem 'ejs'
+
 group :test do
   gem 'cucumber-rails', require: false
 end
