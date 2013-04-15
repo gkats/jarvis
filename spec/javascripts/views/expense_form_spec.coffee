@@ -34,3 +34,74 @@ describe 'Jarvis.Views.ExpenseForm', ->
 
     it 'renders a submit button', ->
       expect(@$el).toContain('button[type=submit]')
+
+    it 'returns self', ->
+      expect(@view.render()).toEqual(@view)
+
+  describe 'submitting', ->
+    beforeEach ->
+      @model = new Backbone.Model()
+      @model.url = '/foo'
+      @collection = new Backbone.Collection()
+      @view = new Jarvis.Views.ExpenseForm(model: @model, collection: @collection)
+      @view.render()
+
+    it 'saves an expense', ->
+      spyOn(@view.model, 'save')
+      @view.$el.submit()
+      expect(@view.model.save).toHaveBeenCalled()
+
+    it 'maps model attributes', ->
+      fillInFormData.call(this)
+      spyOn(@view.model, 'save')
+      @view.$el.submit()
+      expect(@view.model.get('price')).toEqual '9.99'
+      expect(@view.model.get('tag_list')).toEqual 'tags'
+      expect(@view.model.get('description')).toEqual 'an expense'
+      expect(@view.model.get('date')).not.toBeNull()
+
+    fillInFormData = ->
+      @view.$('input[name=price]').val('9.99')
+      @view.$('input[name=tag_list]').val('tags')
+      @view.$('textarea[name=description]').val('an expense')
+
+    describe 'with invalid data', ->
+      it 'does not add the expense to the collection', ->
+        @server = sinon.fakeServer.create()
+        createErrorResponse.call(this)
+        @view.$el.submit()
+        @server.respond()
+        expect(@view.collection.length).toEqual(0)
+
+    describe 'with valid data', ->
+      beforeEach ->
+        @server = sinon.fakeServer.create()
+        createSuccessResponse.call(this)
+
+      it 'creates a new model', ->
+        spyOn(Jarvis.Models, 'Expense')
+        @view.$el.submit()
+        @server.respond()
+        expect(Jarvis.Models.Expense).toHaveBeenCalled()
+
+      it 'resets the form', ->
+        fillInFormData.call(this)
+        @view.$el.submit()
+        @server.respond()
+        expect(@view.$('input[name=price]').val()).toEqual('')
+
+      it 'adds the expense to the collection', ->
+        expect(@view.collection.length).toEqual(0)
+        @view.$el.submit()
+        @server.respond()
+        expect(@view.collection.length).toEqual(1)
+
+    createSuccessResponse = ->
+      @server.respondWith([201,
+        { 'Content-Type': 'application/json', 'Content-Length': 2 }, '{"text": "ok"}'
+      ])
+
+    createErrorResponse = ->
+      @server.respondWith([500,
+      { 'Content-Type': 'application/json', 'Content-Length': 5 }, '{"text": "error"}'
+      ])

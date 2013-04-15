@@ -23,5 +23,6 @@ Feature: Add expenses
     | Price | Tag_list | Description           |
     |       | food     | Breakfast at Tiffanys |
     And I click Add
-    Then I should see the list of expenses
+    Then I should see the expense form
+    And there should be 0 expenses
     And I should see an alert-error message

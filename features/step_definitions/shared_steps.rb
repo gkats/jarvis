@@ -7,8 +7,12 @@ Given(/^I go to the index page$/) do
 end
 
 When(/^I fill in$/) do |table|
-  # table is a Cucumber::Ast::Table
-  pending # express the regexp above with the code you wish you had
+    table.hashes.each do |option|
+    option.each do |key, value|
+      input = page.first("input[name=#{key.downcase}]") || page.first("textarea[name=#{key.downcase}]")
+      input.set(value)
+    end
+  end
 end
 
 When(/^I click (.+)$/) do |clickable|

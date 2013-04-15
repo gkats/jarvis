@@ -17,10 +17,16 @@ Feature: List expenses
     When I go to the index page
     Then I should not see a expenses-empty message
     And there should be 2 expenses
-    And I should see Edit links for each expense
 
   Scenario: Ability to edit expense
     Given I have 1 expense
+    And the expense form is empty
     When I go to the index page
-    And I click Edit
+    And I select the first expense
     Then the expense form should not be empty
+
+  Scenario: Expenses tags
+    Given I have 1 expense with tags "food, drinks"
+    When I go to the index page
+    Then there should be 1 expense
+    And I should see "food, drinks"

@@ -1,23 +1,54 @@
 describe 'Jarvis.Views.ExpensesIndex', ->
+  beforeEach ->
+    @collection = new Backbone.Collection()
+    @view = new Jarvis.Views.ExpensesIndex(collection: @collection)
+
   it 'is a composite view', ->
-    expect(new Jarvis.Views.ExpensesIndex()).toBeInstanceOf(Support.CompositeView)
+    expect(@view).toBeInstanceOf(Support.CompositeView)
 
   describe '#render', ->
+    it 'renders a section with class "expense-form"', ->
+      @view.render()
+      expect(@view.$el).toContain('.expense-form')
+
     it 'renders an expense form', ->
-      view = new Jarvis.Views.ExpensesIndex()
-      spyOn(view, 'renderExpenseForm')
-      view.render()
-      expect(view.renderExpenseForm).toHaveBeenCalled()
+      spyOn(@view, 'renderExpenseForm')
+      @view.render()
+      expect(@view.renderExpenseForm).toHaveBeenCalled()
+
+    it 'renders a section with class "expenses"', ->
+      @view.render()
+      expect(@view.$el).toContain('.expenses')
+
+    it 'renders the expenses', ->
+      spyOn(@view, 'renderExpenses')
+      @view.render()
+      expect(@view.renderExpenses).toHaveBeenCalled()
 
     it 'returns self', ->
-      view = new Jarvis.Views.ExpensesIndex()
-      expect(view.render()).toEqual(view)
+      expect(@view.render()).toEqual(@view)
 
   describe '#renderExpenseForm', ->
-    it 'renders a form', ->
-      view = new Jarvis.Views.ExpensesIndex()
+    it 'renders the expense form view', ->
       spyOn(Jarvis.Views, 'ExpenseForm').andReturn({})
-      spyOn(view, 'renderChildInto')
-      view.renderExpenseForm()
+      spyOn(@view, 'renderChildInto')
+      @view.renderExpenseForm()
       expect(Jarvis.Views.ExpenseForm).toHaveBeenCalled()
-      expect(view.renderChildInto).toHaveBeenCalledWith({}, jasmine.any(Object))
+      expect(@view.renderChildInto).toHaveBeenCalledWith({}, jasmine.any(Object))
+
+  describe '#renderExpenses', ->
+    it 'renders the expenses view', ->
+      spyOn(Jarvis.Views, 'Expenses').andReturn({})
+      spyOn(@view, 'renderChildInto')
+      @view.renderExpenses()
+      expect(Jarvis.Views.Expenses).toHaveBeenCalled()
+      expect(@view.renderChildInto).toHaveBeenCalledWith({}, jasmine.any(Object))
+
+  describe 'events', ->
+    describe 'when a model is added to the collection', ->
+      it 're-renders expenses', ->
+        collection = new Backbone.Collection()
+        view = new Jarvis.Views.ExpensesIndex(collection: collection)
+        spy = spyOn(view, 'renderExpenses')
+        collection.add(new Backbone.Model())
+        expect(spy).toHaveBeenCalled()

@@ -1,9 +1,9 @@
 <label>Price</label>
-<input name="price" type="text" value="<%= expense.escape('price') %>">
+<input name="price" type="text" value="<%= expense.escape('price') %>" placeholder="0.00" autofocus>
 <label>Tags</label>
-<input name="tag_list" type="text" value="<%= expense.escape('tag_list') %>">
+<input name="tag_list" type="text" value="<%= expense.escape('tag_list') %>" placeholder="Comma separated values">
 <label>Date</label>
-<input name="date" type="text" placeholder="DD/MM/YYYY" value="<%= expense.escape('date') %>">
+<input name="date" type="text" value="<%= expense.escape('date') %>" placeholder="DD/MM/YYYY">
 <label>Description</label>
 <textarea name="description" rows="2"><%= expense.escape('description') %></textarea>
 <button type="submit">Add</button>
