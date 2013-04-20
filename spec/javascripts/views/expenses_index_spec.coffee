@@ -37,12 +37,29 @@ describe 'Jarvis.Views.ExpensesIndex', ->
       expect(@view.renderChildInto).toHaveBeenCalledWith({}, jasmine.any(Object))
 
   describe '#renderExpenses', ->
-    it 'renders the expenses view', ->
-      spyOn(Jarvis.Views, 'Expenses').andReturn({})
-      spyOn(@view, 'renderChildInto')
-      @view.renderExpenses()
-      expect(Jarvis.Views.Expenses).toHaveBeenCalled()
-      expect(@view.renderChildInto).toHaveBeenCalledWith({}, jasmine.any(Object))
+    describe 'when there are expenses', ->
+      beforeEach ->
+        @collection = new Backbone.Collection(new Backbone.Model())
+        @view = new Jarvis.Views.ExpensesIndex(collection: @collection)
+
+      it 'renders the expenses view', ->
+        spyOn(Jarvis.Views, 'Expenses').andReturn({})
+        spyOn(@view, 'renderChildInto')
+        @view.renderExpenses()
+        expect(Jarvis.Views.Expenses).toHaveBeenCalled()
+        expect(@view.renderChildInto).toHaveBeenCalledWith({}, jasmine.any(Object))
+
+    describe 'when there are no expenses', ->
+      beforeEach ->
+        @collection = new Backbone.Collection()
+        @view = new Jarvis.Views.ExpensesIndex(collection: @collection)
+
+      it 'renders the empty expenses view', ->
+        spyOn(Jarvis.Views, 'EmptyExpenses').andReturn({})
+        spyOn(@view, 'renderChildInto')
+        @view.renderExpenses()
+        expect(Jarvis.Views.EmptyExpenses).toHaveBeenCalled()
+        expect(@view.renderChildInto).toHaveBeenCalledWith({}, jasmine.any(Object))
 
   describe 'events', ->
     describe 'when a model is added to the collection', ->

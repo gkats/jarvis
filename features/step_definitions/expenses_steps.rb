@@ -29,3 +29,13 @@ end
 Then(/^I should see the expense form$/) do
   page.should have_selector '#expense_form'
 end
+
+Given(/^I have (\d+) tagged expenses$/) do |number|
+  expenses = create_list(:expense, number.to_i, tag_list: 'food')
+end
+
+Then(/^I should see (\d+) listed tags?$/) do |number|
+  tags = page.all('td.tags')
+  tags.length.should eq number.to_i
+  tags.each { |tag| tag.text.should_not(be_blank) }
+end

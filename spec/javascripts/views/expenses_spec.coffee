@@ -10,7 +10,7 @@ describe 'Jarvis.Views.Expenses', ->
   describe '#attributes', ->
     it 'has a class of table', ->
       view = new Jarvis.Views.Expenses()
-      expect(view.attributes.class).toEqual('table')
+      expect(view.attributes.class).toMatch('table')
 
   describe '#render', ->
     beforeEach ->

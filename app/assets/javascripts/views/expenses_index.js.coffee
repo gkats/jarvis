@@ -15,5 +15,8 @@ class Jarvis.Views.ExpensesIndex extends Support.CompositeView
     @renderChildInto(view, @$('.expense-form'))
 
   renderExpenses: ->
-    view = new Jarvis.Views.Expenses(collection: @collection)
+    if @collection.size()
+      view = new Jarvis.Views.Expenses(collection: @collection)
+    else
+      view = new Jarvis.Views.EmptyExpenses()
     @renderChildInto(view, @$('.expenses'))

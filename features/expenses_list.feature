@@ -24,9 +24,3 @@ Feature: List expenses
     When I go to the index page
     And I select the first expense
     Then the expense form should not be empty
-
-  Scenario: Expenses tags
-    Given I have 1 expense with tags "food, drinks"
-    When I go to the index page
-    Then there should be 1 expense
-    And I should see "food, drinks"
