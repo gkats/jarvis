@@ -1,6 +1,7 @@
 class Jarvis.Views.Expenses extends Support.CompositeView
   render: ->
     @renderDailyExpenses()
+    @renderTotal()
     this
 
   renderDailyExpenses: ->
@@ -20,3 +21,7 @@ class Jarvis.Views.Expenses extends Support.CompositeView
   sortedDays = ->
     collectionDates = @collection.map((expense) -> new Date(expense.get('date')))
     _.sortBy(collectionDates, (date) -> date).reverse()
+
+  renderTotal: ->
+    view = new Jarvis.Views.ExpensesTotal(collection: @collection)
+    @$el.append(view.render().el)

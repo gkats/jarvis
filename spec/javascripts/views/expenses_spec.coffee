@@ -13,6 +13,11 @@ describe 'Jarvis.Views.Expenses', ->
     it 'renders daily expense views', ->
       expect(@view.$('table').length).toEqual(2)
 
+    it 'renders a total view', ->
+      spyOn(Jarvis.Views, 'ExpensesTotal').andReturn(render: -> true)
+      @view.render()
+      expect(Jarvis.Views.ExpensesTotal).toHaveBeenCalled()
+
     it 'returns self', ->
       expect(@view.render()).toEqual(@view)
 
