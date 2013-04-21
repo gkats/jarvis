@@ -3,7 +3,7 @@
 <label>Tags</label>
 <input name="tag_list" type="text" value="<%= expense.escape('tag_list') %>" placeholder="Comma separated values">
 <label>Date</label>
-<input name="date" type="text" value="<%= expense.escape('date') %>" placeholder="DD/MM/YYYY">
+<input name="date" type="text" value="<%= this.modelInputDate() %>" placeholder="DD/MM/YYYY">
 <label>Description</label>
 <textarea name="description" rows="2"><%= expense.escape('description') %></textarea>
 <button type="submit">Add</button>

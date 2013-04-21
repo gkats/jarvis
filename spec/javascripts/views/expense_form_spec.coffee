@@ -8,7 +8,7 @@ describe 'Jarvis.Views.ExpenseForm', ->
 
   describe '#render', ->
     beforeEach ->
-      @model = new Backbone.Model(price: 9.99, tag_list: 'tags', date: 'a date', description: 'model description')
+      @model = new Backbone.Model(price: 9.99, tag_list: 'tags', date: new Date(), description: 'model description')
       @view = new Jarvis.Views.ExpenseForm(model: @model)
       @view.render()
       @$el = $(@view.render().el)[0]
@@ -24,9 +24,10 @@ describe 'Jarvis.Views.ExpenseForm', ->
       expect(@$el).toContain('input[name=tag_list]')
       expect($(@$el).find('input[name=tag_list]').val()).toEqual('tags')
 
-    it 'renders an input for date', ->
+    it 'renders an input for date in the format dd/mm/yyyy', ->
       expect(@$el).toContain('input[name=date]')
-      expect($(@$el).find('input[name=date]').val()).toEqual('a date')
+      date = new Date()
+      expect($(@$el).find('input[name=date]').val()).toEqual("#{date.getDate()}/#{date.getMonth() + 1}/#{date.getFullYear()}")
 
     it 'renders a text area for description', ->
       expect(@$el).toContain('textarea[name=description]')
@@ -59,6 +60,16 @@ describe 'Jarvis.Views.ExpenseForm', ->
       expect(@view.model.get('tag_list')).toEqual 'tags'
       expect(@view.model.get('description')).toEqual 'an expense'
       expect(@view.model.get('date')).not.toBeNull()
+
+    it 'sends the full date (start of day)', ->
+      date = new Date()
+      model = new Backbone.Model(date: date)
+      view = new Jarvis.Views.ExpenseForm(model: model, collection: {})
+      view.render()
+      spyOn(view.model, 'save')
+      view.$el.submit()
+      date.setHours(0,0,0,0)
+      expect(view.model.get('date')).toEqual(date)
 
     fillInFormData = ->
       @view.$('input[name=price]').val('9.99')
@@ -105,3 +116,10 @@ describe 'Jarvis.Views.ExpenseForm', ->
       @server.respondWith([500,
       { 'Content-Type': 'application/json', 'Content-Length': 5 }, '{"text": "error"}'
       ])
+
+  describe '#modelInputDate', ->
+    it 'returns the model date in the format dd/mm/yyyy', ->
+      date = new Date()
+      model = new Backbone.Model(date: date)
+      view = new Jarvis.Views.ExpenseForm(model: model, collection: {})
+      expect(view.modelInputDate()).toEqual("#{date.getDate()}/#{date.getMonth() + 1}/#{date.getFullYear()}")
