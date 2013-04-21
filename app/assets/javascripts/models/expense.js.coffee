@@ -6,3 +6,6 @@ class Jarvis.Models.Expense extends Backbone.Model
     tag_list: ''
     date: new Date()
     description: ''
+
+  byDate: (date) ->
+    new Date(@get('date')).getTime() == date.getTime()

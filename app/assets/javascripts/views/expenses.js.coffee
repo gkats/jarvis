@@ -1,16 +1,11 @@
 class Jarvis.Views.Expenses extends Support.CompositeView
-  template: JST['expenses']
-
-  tagName: 'table'
-
-  attributes:
-    class: 'table table-hover'
-
   render: ->
-    @$el.html(@template())
-    @collection.each(@appendExpense) if @collection.length
+    collectionDates = @collection.map((expense) -> new Date(expense.get('date')))
+    days = _.sortBy(collectionDates, (date) -> date)
+    for day in _.uniq(days, true, (day) -> day.getTime()).reverse()
+      @appendDailyExpenses(@collection.byDate(day))
     this
 
-  appendExpense: (expense) =>
-    view = new Jarvis.Views.ExpenseItem(model: expense)
-    @$('tbody').append(view.render().el)
+  appendDailyExpenses: (dailyCollection) =>
+    view = new Jarvis.Views.DailyExpenses(collection: dailyCollection)
+    @$el.append(view.render().el)

@@ -25,3 +25,20 @@ describe 'Jarvis.Models.Expense', ->
 
     it 'has a blank description', ->
       expect(@expense.get('description')).toEqual('')
+
+  describe '#byDate', ->
+    describe 'when the expense date equals the given date', ->
+      beforeEach ->
+        @date = new Date()
+        @expense = new Jarvis.Models.Expense(date: @date)
+
+      it 'returns true', ->
+        expect(@expense.byDate(@date)).toEqual(true)
+
+    describe 'when the expense date does not equal the given date', ->
+      beforeEach ->
+        @date = new Date()
+        @expense = new Jarvis.Models.Expense(date: new Date(2012, 0, 1))
+
+      it 'returns false', ->
+        expect(@expense.byDate(@date)).toEqual(false)
