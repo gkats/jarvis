@@ -25,16 +25,6 @@ describe 'Jarvis.Views.ExpenseItem', ->
     it 'renders the expense tag list', ->
       expect(@$el.text()).toContain 'tags'
 
-    it 'renders the expense date in the format ddd, dd mmm yyyy', ->
-      expect(@$el.text()).toContain 'Tue, 1 Jan 2013'
-
-  describe '#modelDisplayDate', ->
-    it 'returns the model date in the format ddd, dd mmm yyyy', ->
-      date = new Date(2013, 0, 1)
-      model = new Backbone.Model(date: date)
-      view = new Jarvis.Views.ExpenseItem(model: model)
-      expect(view.modelDisplayDate()).toEqual('Tue, 1 Jan 2013')
-
   describe '#modelDisplayPrice', ->
     it 'returns the model price with two decimal digits', ->
       model = new Backbone.Model(price: 9)

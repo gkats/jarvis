@@ -7,18 +7,9 @@ class Jarvis.Views.ExpenseItem extends Support.CompositeView
     @$el.html(@template(expense: @model))
     this
 
-  modelDisplayDate: ->
-    modelDate = @model.escape('date')
-    return '' unless modelDate && modelDate.length
-    date = new Date(modelDate)
-    "#{dayNames[date.getDay()]}, #{date.getDate()} #{monthNames[date.getMonth()]} #{date.getFullYear()}"
-
   modelDisplayPrice: ->
     modelPrice = @model.escape('price')
     if modelPrice && modelPrice.length
       parseFloat(modelPrice).toFixed(2)
     else
       ''
-
-  monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
-  dayNames = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat']

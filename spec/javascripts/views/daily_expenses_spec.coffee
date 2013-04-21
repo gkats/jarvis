@@ -14,7 +14,7 @@ describe 'Jarvis.Views.DailyExpenses', ->
 
   describe '#render', ->
     beforeEach ->
-      expenses = [new Backbone.Model(), new Backbone.Model()]
+      expenses = [new Backbone.Model(date: new Date(2013, 0, 1), price: 9), new Backbone.Model(date: new Date(2013, 0, 1), price: 9)]
       @collection = new Backbone.Collection(expenses)
       @view = new Jarvis.Views.DailyExpenses(collection: @collection)
       spyOn(@view, 'appendExpense')
@@ -31,6 +31,15 @@ describe 'Jarvis.Views.DailyExpenses', ->
       view.render()
       expect(view.appendExpense.callCount).toEqual(2)
 
+    it 'renders the day in the table header', ->
+      expect(@view.$('thead td').text()).toMatch('2013')
+
+    it 'renders the day in the format ddd, dd mmm yyyy', ->
+      expect(@$el.text()).toContain 'Tue, 1 Jan 2013'
+
+    it 'renders the total price in the table header', ->
+      expect(@view.$('thead td').text()).toMatch('18.00')
+
     it 'returns self', ->
       expect(@view.render()).toEqual(@view)
 
@@ -44,3 +53,10 @@ describe 'Jarvis.Views.DailyExpenses', ->
       view.appendExpense({})
       expect(Jarvis.Views.ExpenseItem).toHaveBeenCalled()
       expect(view.$el).toContain('tr')
+
+  describe '#day', ->
+    it 'returns the model date in the format ddd, dd mmm yyyy', ->
+      date = new Date(2013, 0, 1)
+      model = new Backbone.Model(date: date)
+      view = new Jarvis.Views.DailyExpenses(collection: new Backbone.Collection(model))
+      expect(view.day()).toEqual('Tue, 1 Jan 2013')
