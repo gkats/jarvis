@@ -2,6 +2,7 @@ class Jarvis.Views.Expenses extends Support.CompositeView
   render: ->
     @renderDailyExpenses()
     @renderTotal()
+    @renderPreferences()
     this
 
   renderDailyExpenses: ->
@@ -24,4 +25,8 @@ class Jarvis.Views.Expenses extends Support.CompositeView
 
   renderTotal: ->
     view = new Jarvis.Views.ExpensesTotal(collection: @collection)
+    @$el.append(view.render().el)
+
+  renderPreferences: ->
+    view = new Jarvis.Views.Preferences()
     @$el.append(view.render().el)
