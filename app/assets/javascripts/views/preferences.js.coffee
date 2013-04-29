@@ -19,6 +19,7 @@ class Jarvis.Views.Preferences extends Support.CompositeView
     value = @.$('#interval').val()
     if value == '1'
       @renderChildInto({render: -> ''}, @.$('#interval_span'))
+      Jarvis.Services.EventAggregator.trigger('interval:reset')
     else
       if value == '2'
         view = new Jarvis.Views.MonthInterval()

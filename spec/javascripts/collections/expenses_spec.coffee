@@ -19,3 +19,11 @@ describe 'Jarvis.Collections.Expenses', ->
       model2 = { date: new Date(2012, 0, 1) }
       collection = new Jarvis.Collections.Expenses([model1, model2])
       expect(collection.byDate(date1).size()).toEqual(1)
+
+  describe '#byInterval', ->
+    it 'filters expenses by an interval', ->
+      interval = { from: new Date(2013, 0, 1), to: new Date(2013, 0, 2) }
+      model1 = { date: new Date(2013, 0, 1, 12) }
+      model2 = { date: new Date(2013, 0, 3) }
+      collection = new Jarvis.Collections.Expenses([model1, model2])
+      expect(collection.byInterval(interval).size()).toEqual(1)

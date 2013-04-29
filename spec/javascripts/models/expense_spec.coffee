@@ -42,3 +42,36 @@ describe 'Jarvis.Models.Expense', ->
 
       it 'returns false', ->
         expect(@expense.byDate(@date)).toEqual(false)
+
+  describe '#byInterval', ->
+    beforeEach ->
+      @expense = new Jarvis.Models.Expense(date: new Date(2013, 0, 2))
+
+    describe 'when the expense date is in the given interval', ->
+      beforeEach ->
+        @interval = { from: new Date(2013, 0, 1), to: new Date(2013, 0, 3) }
+
+      it 'returns true', ->
+        expect(@expense.byInterval(@interval)).toEqual(true)
+
+    describe 'when the expense date is outside the given interval', ->
+      beforeEach ->
+        @interval = { from: new Date(2013, 0, 3), to: new Date(2013, 0, 4) }
+
+      it 'returns false', ->
+        expect(@expense.byInterval(@interval)).toEqual(false)
+
+
+    describe 'when the expense date equals the interval from date', ->
+      beforeEach ->
+        @interval = { from: new Date(2013, 0, 2), to: new Date(2013, 0, 4) }
+
+      it 'returns true', ->
+        expect(@expense.byInterval(@interval)).toEqual(true)
+
+    describe 'when the expense date equals the interval to date', ->
+      beforeEach ->
+        @interval = { from: new Date(2013, 0, 1), to: new Date(2013, 0, 2) }
+
+      it 'returns true', ->
+        expect(@expense.byInterval(@interval)).toEqual(true)

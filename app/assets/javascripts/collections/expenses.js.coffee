@@ -4,3 +4,6 @@ class Jarvis.Collections.Expenses extends Jarvis.Collections.FilterableCollectio
 
   byDate: (date) ->
     @filtered((expense) -> expense.byDate(date))
+
+  byInterval: (interval) ->
+    @filtered((expense) -> expense.byInterval(interval))

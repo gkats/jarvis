@@ -29,10 +29,15 @@ describe 'Jarvis.Views.Preferences', ->
     describe 'when all time is selected', ->
       beforeEach ->
         @intervalSelect.val('1')
+        @spy = spyOn(Jarvis.Services.EventAggregator, 'trigger')
 
       it 'renders an empty view', ->
         @view.intervalChange()
         expect(@view.$('#interval_span').html()).toEqual('')
+
+      it 'triggers an interval reset event', ->
+        @view.intervalChange()
+        expect(@spy).toHaveBeenCalledWith('interval:reset')
 
     describe 'when pick a month is selected', ->
       beforeEach ->

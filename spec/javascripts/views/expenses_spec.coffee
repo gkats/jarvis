@@ -18,11 +18,6 @@ describe 'Jarvis.Views.Expenses', ->
       @view.render()
       expect(spy).toHaveBeenCalled()
 
-    it 'renders preferences', ->
-      spy = spyOn(Jarvis.Views, 'Preferences').andReturn(render: -> true)
-      @view.render()
-      expect(spy).toHaveBeenCalled()
-
     it 'returns self', ->
       expect(@view.render()).toEqual(@view)
 
@@ -30,6 +25,6 @@ describe 'Jarvis.Views.Expenses', ->
     it 'renders a daily expense view', ->
       collection = new Jarvis.Collections.Expenses()
       view = new Jarvis.Views.Expenses(collection: collection)
-      spyOn(Jarvis.Views, 'DailyExpenses').andReturn({ render: -> true })
+      spyOn(Jarvis.Views, 'DailyExpenses').andReturn(render: -> true)
       view.appendDailyExpenses(view.collection)
       expect(Jarvis.Views.DailyExpenses).toHaveBeenCalled()

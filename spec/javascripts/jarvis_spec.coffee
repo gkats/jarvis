@@ -11,6 +11,9 @@ describe 'Jarvis App', ->
   it 'has a namespace for Routers', ->
     expect(Jarvis.Routers).toBeTruthy()
 
+  it 'has a namespace for Services', ->
+    expect(Jarvis.Services).toBeTruthy()
+
   describe '#initialize', ->
     it 'instantiates a collection out of received data', ->
       data = { expenses: [{ price: 9.99 }, { price: 8.99 }] }
@@ -22,6 +25,11 @@ describe 'Jarvis App', ->
       spyOn(Jarvis.Routers, 'ExpensesRouter')
       Jarvis.initialize({})
       expect(Jarvis.Routers.ExpensesRouter).toHaveBeenCalled()
+
+    it 'has an event aggregator', ->
+      Jarvis.initialize({})
+      expect(Jarvis.Services.EventAggregator).toBeTruthy()
+      expect(Jarvis.Services.EventAggregator.trigger).toBeTruthy()
 
     it 'starts Backbone.history', ->
       Backbone.history.started = null

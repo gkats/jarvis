@@ -25,6 +25,11 @@ describe 'Jarvis.Views.ExpensesIndex', ->
       @view.render()
       expect(@view.renderExpenses).toHaveBeenCalled()
 
+    it 'renders preferences', ->
+      spy = spyOn(Jarvis.Views, 'Preferences').andReturn(render: -> true)
+      @view.render()
+      expect(spy).toHaveBeenCalled()
+
     it 'returns self', ->
       expect(@view.render()).toEqual(@view)
 
@@ -66,6 +71,56 @@ describe 'Jarvis.Views.ExpensesIndex', ->
       it 're-renders expenses', ->
         collection = new Backbone.Collection()
         view = new Jarvis.Views.ExpensesIndex(collection: collection)
-        spy = spyOn(view, 'renderExpenses')
+        spy = spyOn(view, 'renderExpenses').andReturn(true)
         collection.add(new Backbone.Model())
         expect(spy).toHaveBeenCalled()
+
+    describe 'when the period interval is changed', ->
+      it 'filters expenses', ->
+        collection = new Jarvis.Collections.Expenses([])
+        view = new Jarvis.Views.ExpensesIndex(collection: collection)
+        view.render()
+        spy = spyOn(view, 'intervalChanged').andReturn(-> true)
+        Jarvis.Services.EventAggregator.trigger('interval:changed', '1')
+        expect(spy).toHaveBeenCalled()
+
+    describe 'when the period interval is reset', ->
+      it 'resets expenses', ->
+        collection = new Jarvis.Collections.Expenses()
+        view = new Jarvis.Views.ExpensesIndex(collection: collection)
+        view.render()
+        spy = spyOn(view, 'intervalReset').andReturn(false)
+        Jarvis.Services.EventAggregator.trigger('interval:reset')
+        expect(spy).toHaveBeenCalled()
+
+  describe '#intervalChanged', ->
+    describe 'when there are 2 expenses in different months', ->
+      beforeEach ->
+        expenses = [
+          new Jarvis.Models.Expense(date: new Date(2013, 1, 1)),
+          new Jarvis.Models.Expense(date: new Date(2013, 8, 1))
+        ]
+        @collection = new Jarvis.Collections.Expenses(expenses)
+        @view = new Jarvis.Views.ExpensesIndex(collection: @collection)
+        @view.render()
+        expect(@view.$('tbody tr').size()).toEqual(2)
+
+      it 'filters expenses', ->
+        @view.intervalChanged(from: new Date(2013, 0), to: new Date(2013, 2, 1, 0))
+        expect(@view.$('tbody tr').size()).toEqual(1)
+
+  describe '#intervalReset', ->
+    beforeEach ->
+      expenses = [
+        new Jarvis.Models.Expense(date: new Date(2013, 1, 1)),
+        new Jarvis.Models.Expense(date: new Date(2013, 8, 1))
+      ]
+      @collection = new Jarvis.Collections.Expenses(expenses)
+      @view = new Jarvis.Views.ExpensesIndex(collection: @collection)
+      @view.render()
+      @view.intervalChanged(from: new Date(2013, 0), to: new Date(2013, 2, 1, 0))
+      expect(@view.$('tbody tr').size()).toEqual(1)
+
+    it 'shows all expenses', ->
+      @view.intervalReset()
+      expect(@view.$('tbody tr').size()).toEqual(2)

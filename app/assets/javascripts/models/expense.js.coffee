@@ -9,3 +9,9 @@ class Jarvis.Models.Expense extends Backbone.Model
 
   byDate: (date) ->
     new Date(@get('date')).getTime() == date.getTime()
+
+  byInterval: (interval) ->
+    from = interval.from.getTime()
+    to = interval.to.getTime()
+    expenseDate = new Date(@get('date')).getTime()
+    from <= expenseDate <= to
