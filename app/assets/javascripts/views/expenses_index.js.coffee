@@ -18,6 +18,9 @@ class Jarvis.Views.ExpensesIndex extends Support.CompositeView
     @renderChildInto(view, @$('.expense-form'))
 
   renderExpenses: (expenses = @collection) ->
+    # when adding, the model is passed here
+    expenses = expenses.collection if expenses.collection
+
     if expenses.size()
       view = new Jarvis.Views.Expenses(collection: expenses)
     else
@@ -26,7 +29,7 @@ class Jarvis.Views.ExpensesIndex extends Support.CompositeView
 
   renderPreferences: ->
     view = new Jarvis.Views.Preferences()
-    @$el.append(view.render().el)
+    @renderChildInto(view, @$('.preferences'))
 
   intervalChanged: (interval) ->
     filteredCollection = @collection.byInterval(interval)
