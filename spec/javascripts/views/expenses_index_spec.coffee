@@ -93,6 +93,15 @@ describe 'Jarvis.Views.ExpensesIndex', ->
         Jarvis.Services.EventAggregator.trigger('interval:reset')
         expect(spy).toHaveBeenCalled()
 
+    describe 'when an expense is selected for editing', ->
+      it 'edits the expense', ->
+        collection = new Jarvis.Collections.Expenses()
+        view = new Jarvis.Views.ExpensesIndex(collection: collection)
+        view.render()
+        spy = spyOn(view, 'expenseEdit').andReturn(-> false)
+        Jarvis.Services.EventAggregator.trigger('interval:reset')
+        expect(spy).toHaveBeenCalled()
+
   describe '#intervalChanged', ->
     describe 'when there are 2 expenses in different months', ->
       beforeEach ->
@@ -124,3 +133,15 @@ describe 'Jarvis.Views.ExpensesIndex', ->
     it 'shows all expenses', ->
       @view.intervalReset()
       expect(@view.$('tbody tr').size()).toEqual(2)
+
+  describe '#expenseEdit', ->
+    it 'populates the form with the expense for editing', ->
+      expenses = [
+        new Jarvis.Models.Expense(price: '9.99', date: new Date(), tag_list: '', description: ''),
+        new Jarvis.Models.Expense(price: '2.00')
+      ]
+      @collection = new Jarvis.Collections.Expenses(expenses)
+      @view = new Jarvis.Views.ExpensesIndex(collection: @collection)
+      @view.render()
+      @view.expenseEdit(expenses[0])
+      expect(@view.$('input[name=price]').val()).toEqual('9.99')

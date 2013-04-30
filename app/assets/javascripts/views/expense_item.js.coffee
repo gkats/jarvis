@@ -3,6 +3,12 @@ class Jarvis.Views.ExpenseItem extends Support.CompositeView
 
   tagName: 'tr'
 
+  attributes:
+    class: 'expense'
+
+  events:
+    'click': 'editExpense'
+
   render: ->
     @$el.html(@template(expense: @model))
     this
@@ -13,3 +19,7 @@ class Jarvis.Views.ExpenseItem extends Support.CompositeView
       parseFloat(modelPrice).toFixed(2)
     else
       ''
+
+  editExpense: (e) ->
+    Jarvis.Services.EventAggregator.trigger('expense:edit', @model)
+    false

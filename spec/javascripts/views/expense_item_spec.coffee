@@ -25,8 +25,24 @@ describe 'Jarvis.Views.ExpenseItem', ->
     it 'renders the expense tag list', ->
       expect(@$el.text()).toContain 'tags'
 
+  describe 'events', ->
+    it 'edits expense when clicked', ->
+      view = new Jarvis.Views.ExpenseItem(model: new Backbone.Model())
+      spyOn(view, 'editExpense')
+      view.render()
+      view.$el.trigger 'click'
+      expect(view.editExpense).toHaveBeenCalled()
+
   describe '#modelDisplayPrice', ->
     it 'returns the model price with two decimal digits', ->
       model = new Backbone.Model(price: 9)
       view = new Jarvis.Views.ExpenseItem(model: model)
       expect(view.modelDisplayPrice()).toEqual('9.00')
+
+  describe '#editExpense', ->
+    it 'triggers an expense edit event', ->
+      model = new Backbone.Model(price: 9)
+      view = new Jarvis.Views.ExpenseItem(model: model)
+      spy = spyOn(Jarvis.Services.EventAggregator, 'trigger')
+      view.editExpense({})
+      expect(spy).toHaveBeenCalledWith('expense:edit', model)
