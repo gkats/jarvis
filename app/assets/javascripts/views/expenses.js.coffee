@@ -24,4 +24,4 @@ class Jarvis.Views.Expenses extends Support.CompositeView
 
   renderTotal: ->
     view = new Jarvis.Views.ExpensesTotal(collection: @collection)
-    @$el.append(view.render().el)
+    @$el.prepend(view.render().el)

@@ -1,7 +1,8 @@
 class Jarvis.Views.ExpensesTotal extends Support.CompositeView
   template: JST['total']
 
-  tagName: 'h1'
+  attributes:
+    class: 'well total'
 
   render: ->
     @$el.html(@template())

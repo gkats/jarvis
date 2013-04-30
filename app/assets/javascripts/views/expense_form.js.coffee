@@ -5,14 +5,14 @@ class Jarvis.Views.ExpenseForm extends Support.CompositeView
 
   attributes:
     'id': 'expense_form'
+    'class': 'form well'
 
   events:
     'submit': 'saveExpense'
 
-  initialize: ->
-
   render: ->
     @$el.html(@template(expense: @model))
+    @$('input[name=date]').datepicker(format: 'dd/mm/yyyy')
     this
 
   saveExpense: (e) ->
@@ -29,7 +29,7 @@ class Jarvis.Views.ExpenseForm extends Support.CompositeView
     @model.set(
       price: @$('input[name=price]').val()
       tag_list: @$('input[name=tag_list]').val()
-      date: createDateFromInput(@$('input[name=date]').val())
+      date: @$('input[name=date]').data('datepicker').getDate()
       description: @$('textarea[name=description]').val()
     )
 
@@ -44,11 +44,11 @@ class Jarvis.Views.ExpenseForm extends Support.CompositeView
     date = new Date(modelDate)
     "#{date.getDate()}/#{date.getMonth() + 1}/#{date.getFullYear()}"
 
-  createDateFromInput = (dateString) ->
-    date = ''
-    day = dateString.match(/^\d{1,2}/)
-    month = dateString.match(/\/\d{1,2}\//)
-    year = dateString.match(/\d{4}$/)
-    if day && month && year
-      date = new Date(year[0], month[0].replace(/\//g, '') - 1, day[0])
-    date
+  # createDateFromInput = (dateString) ->
+  #   date = ''
+  #   day = dateString.match(/^\d{1,2}/)
+  #   month = dateString.match(/\/\d{1,2}\//)
+  #   year = dateString.match(/\d{4}$/)
+  #   if day && month && year
+  #     date = new Date(year[0], month[0].replace(/\//g, '') - 1, day[0])
+  #   date
