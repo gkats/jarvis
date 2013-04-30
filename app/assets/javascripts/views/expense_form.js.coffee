@@ -43,12 +43,3 @@ class Jarvis.Views.ExpenseForm extends Support.CompositeView
     return '' unless modelDate && modelDate.length
     date = new Date(modelDate)
     "#{date.getDate()}/#{date.getMonth() + 1}/#{date.getFullYear()}"
-
-  # createDateFromInput = (dateString) ->
-  #   date = ''
-  #   day = dateString.match(/^\d{1,2}/)
-  #   month = dateString.match(/\/\d{1,2}\//)
-  #   year = dateString.match(/\d{4}$/)
-  #   if day && month && year
-  #     date = new Date(year[0], month[0].replace(/\//g, '') - 1, day[0])
-  #   date
