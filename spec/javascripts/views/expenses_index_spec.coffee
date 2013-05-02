@@ -145,3 +145,14 @@ describe 'Jarvis.Views.ExpensesIndex', ->
       @view.render()
       @view.expenseEdit(expenses[0])
       expect(@view.$('input[name=price]').val()).toEqual('9.99')
+
+  describe '#collectionChanged', ->
+    it 'renders expenses', ->
+      spy = spyOn(@view, 'renderExpenses').andReturn(true)
+      @view.collectionChanged()
+      expect(spy).toHaveBeenCalled()
+
+    it 'renders preferences', ->
+      spyOn(@view, 'renderExpenses').andReturn(true)
+      spy = spyOn(@view, 'renderPreferences').andReturn(true)
+      expect(spy).toHaveBeenCalled()

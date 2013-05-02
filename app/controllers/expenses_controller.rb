@@ -5,6 +5,10 @@ class ExpensesController < ApplicationController
     respond_with Expense.create expense_params
   end
 
+  def update
+    respond_with Expense.update params[:id], expense_params
+  end
+
   private
 
     def expense_params

@@ -25,4 +25,31 @@ describe ExpensesController do
       end
     end
   end
+
+  describe 'PUT update' do
+    let(:expense) { create :expense }
+    let(:price) { expense.price }
+
+    context 'with valid parameters' do
+      before(:each) do
+        expense.price = price + 10
+      end
+
+      it 'updates the expense' do
+        put :update, expense.attributes, format: :json
+        expense.price.should eq (price + 10)
+      end
+    end
+
+    context 'with invalid parameters' do
+      before(:each) do
+        expense.price = nil
+      end
+
+      it 'does not update the expense' do
+        put :update, expense.attributes, format: :json
+        expense.price.should eq price
+      end
+    end
+  end
 end

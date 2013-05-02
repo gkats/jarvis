@@ -1,6 +1,6 @@
 Jarvis::Application.routes.draw do
   scope 'api' do
-    resources :expenses, only: [:create, :show]
+    resources :expenses, only: [:create, :update, :show]
   end
 
   if Rails.env.development? || Rails.env.test?

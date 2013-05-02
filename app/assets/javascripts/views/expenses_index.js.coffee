@@ -3,6 +3,7 @@ class Jarvis.Views.ExpensesIndex extends Support.CompositeView
 
   initialize: ->
     @bindTo(@collection, 'add', @renderExpenses)
+    @bindTo(@collection, 'change', @collectionChanged)
     @bindTo(Jarvis.Services.EventAggregator, 'interval:changed', @intervalChanged)
     @bindTo(Jarvis.Services.EventAggregator, 'interval:reset', @intervalReset)
     @bindTo(Jarvis.Services.EventAggregator, 'expense:edit', @expenseEdit)
@@ -42,3 +43,7 @@ class Jarvis.Views.ExpensesIndex extends Support.CompositeView
 
   expenseEdit: (expense) ->
     @renderExpenseForm(expense)
+
+  collectionChanged: ->
+    @renderExpenses()
+    @renderPreferences()
