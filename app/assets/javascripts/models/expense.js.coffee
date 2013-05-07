@@ -15,3 +15,7 @@ class Jarvis.Models.Expense extends Backbone.Model
     to = interval.to.getTime()
     expenseDate = new Date(@get('date')).getTime()
     from <= expenseDate <= to
+
+  byTags: (tags) ->
+    own_tags = @get('tag_list').split(', ')
+    own_tags.length != _.difference(own_tags, tags.split(', ')).length

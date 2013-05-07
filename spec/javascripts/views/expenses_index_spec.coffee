@@ -80,17 +80,8 @@ describe 'Jarvis.Views.ExpensesIndex', ->
         collection = new Jarvis.Collections.Expenses([])
         view = new Jarvis.Views.ExpensesIndex(collection: collection)
         view.render()
-        spy = spyOn(view, 'intervalChanged').andReturn(-> true)
-        Jarvis.Services.EventAggregator.trigger('interval:changed', '1')
-        expect(spy).toHaveBeenCalled()
-
-    describe 'when the period interval is reset', ->
-      it 'resets expenses', ->
-        collection = new Jarvis.Collections.Expenses()
-        view = new Jarvis.Views.ExpensesIndex(collection: collection)
-        view.render()
-        spy = spyOn(view, 'intervalReset').andReturn(false)
-        Jarvis.Services.EventAggregator.trigger('interval:reset')
+        spy = spyOn(view, 'filterExpenses').andReturn(-> true)
+        Jarvis.Services.EventAggregator.trigger('preferences:filter', '1')
         expect(spy).toHaveBeenCalled()
 
     describe 'when an expense is selected for editing', ->
@@ -102,37 +93,51 @@ describe 'Jarvis.Views.ExpensesIndex', ->
         Jarvis.Services.EventAggregator.trigger('interval:reset')
         expect(spy).toHaveBeenCalled()
 
-  describe '#intervalChanged', ->
-    describe 'when there are 2 expenses in different months', ->
+  describe '#filterExpenses', ->
+    describe 'when there are two expenses in different months with different tags', ->
       beforeEach ->
         expenses = [
-          new Jarvis.Models.Expense(date: new Date(2013, 1, 1)),
-          new Jarvis.Models.Expense(date: new Date(2013, 8, 1))
+          new Jarvis.Models.Expense(date: new Date(2013, 1, 1), tag_list: 'food'),
+          new Jarvis.Models.Expense(date: new Date(2013, 8, 1), tag_list: 'gas')
         ]
         @collection = new Jarvis.Collections.Expenses(expenses)
         @view = new Jarvis.Views.ExpensesIndex(collection: @collection)
         @view.render()
         expect(@view.$('tbody tr').size()).toEqual(2)
 
-      it 'filters expenses', ->
-        @view.intervalChanged(from: new Date(2013, 0), to: new Date(2013, 2, 1, 0))
+    describe 'when an interval is present', ->
+      beforeEach ->
+        @filters = { interval: new Jarvis.Models.Interval(new Date(2013, 0), new Date(2013, 2, 1, 0)) }
+
+      it 'filters expenses by date', ->
+        @view.filterExpenses(@filters)
         expect(@view.$('tbody tr').size()).toEqual(1)
 
-  describe '#intervalReset', ->
-    beforeEach ->
-      expenses = [
-        new Jarvis.Models.Expense(date: new Date(2013, 1, 1)),
-        new Jarvis.Models.Expense(date: new Date(2013, 8, 1))
-      ]
-      @collection = new Jarvis.Collections.Expenses(expenses)
-      @view = new Jarvis.Views.ExpensesIndex(collection: @collection)
-      @view.render()
-      @view.intervalChanged(from: new Date(2013, 0), to: new Date(2013, 2, 1, 0))
-      expect(@view.$('tbody tr').size()).toEqual(1)
+    describe 'when no interval is present', ->
+      beforeEach ->
+        @filters = {}
 
-    it 'shows all expenses', ->
-      @view.intervalReset()
-      expect(@view.$('tbody tr').size()).toEqual(2)
+      it 'renders all expenses', ->
+        @view.filterExpenses(@filters)
+        expect(@view.$('tbody tr').size()).toEqual(2)
+
+    describe 'when tags are present', ->
+      beforeEach ->
+        @filters = { tags: 'food' }
+
+      it 'filters expenses by tag', ->
+        @view.filterExpenses(@filters)
+        expect(@view.$('tbody tr').size()).toEqual(1)
+
+    describe 'when interval and tags are present', ->
+      beforeEach ->
+        @filters =
+          interval: new Jarvis.Models.Interval(new Date(2013, 0), new Date(2013, 2, 1, 0))
+          tags: 'food'
+
+      it 'filters expenses by interval and tags', ->
+        @view.filterExpenses(@filters)
+        expect(@view.$('tbody tr').size()).toEqual(1)
 
   describe '#expenseEdit', ->
     it 'populates the form with the expense for editing', ->

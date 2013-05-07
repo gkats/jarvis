@@ -27,3 +27,11 @@ describe 'Jarvis.Collections.Expenses', ->
       model2 = { date: new Date(2013, 0, 3) }
       collection = new Jarvis.Collections.Expenses([model1, model2])
       expect(collection.byInterval(interval).size()).toEqual(1)
+
+  describe '#byTags', ->
+    it 'filters expenses by tags', ->
+      tags = 'gas, food'
+      model1 = { tag_list: 'food' }
+      model2 = { tag_list: 'drinks' }
+      collection = new Jarvis.Collections.Expenses([model1, model2])
+      expect(collection.byTags(tags).size()).toEqual(1)

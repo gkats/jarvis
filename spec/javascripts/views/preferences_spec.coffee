@@ -19,6 +19,15 @@ describe 'Jarvis.Views.Preferences', ->
       expect(@view.$el.html()).toContain('interval_span')
       expect(@view.$('#interval_span').html()).toEqual('')
 
+    it 'renders an input', ->
+      expect(@view.$el.html()).toContain('input')
+
+    it 'renders a filter button', ->
+      expect(@view.$el).toContain('button')
+
+    it 'renders a reset link', ->
+      expect(@view.$el).toContain('a')
+
     it 'returns self', ->
       expect(@view.render()).toEqual(@view)
 
@@ -33,11 +42,7 @@ describe 'Jarvis.Views.Preferences', ->
 
       it 'renders an empty view', ->
         @view.intervalChange()
-        expect(@view.$('#interval_span').html()).toEqual('')
-
-      it 'triggers an interval reset event', ->
-        @view.intervalChange()
-        expect(@spy).toHaveBeenCalledWith('interval:reset')
+        expect(@view.$('#interval_span').html()).toEqual('<div></div>')
 
     describe 'when pick a month is selected', ->
       beforeEach ->
@@ -56,3 +61,21 @@ describe 'Jarvis.Views.Preferences', ->
         spy = spyOn(Jarvis.Views, 'CustomInterval').andReturn(render: -> true)
         @view.intervalChange()
         expect(spy).toHaveBeenCalled()
+
+  describe 'when filter button is clicked', ->
+    it 'filters expenses', ->
+      spy = spyOn(@view, 'filter').andReturn(true)
+      @view.$('button').click()
+      expect(spy).toHaveBeenCalled()
+
+  describe '#filter', ->
+    it 'triggers a preferences:filter event', ->
+      spy = spyOn(Jarvis.Services.EventAggregator, 'trigger').andReturn(true)
+      interval = 'interval'
+      tags = 'tags'
+      @view.filter()
+      expect(spy).toHaveBeenCalledWith('preferences:filter', { interval: interval, tags: tags })
+
+  describe 'when reset button is clicked', ->
+    it 'resets all filters', ->
+      expect('pending').toEqual('completed')

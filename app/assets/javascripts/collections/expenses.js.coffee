@@ -7,3 +7,6 @@ class Jarvis.Collections.Expenses extends Jarvis.Collections.FilterableCollectio
 
   byInterval: (interval) ->
     @filtered((expense) -> expense.byInterval(interval))
+
+  byTags: (tags) ->
+    @filtered((expense) -> expense.byTags(tags))

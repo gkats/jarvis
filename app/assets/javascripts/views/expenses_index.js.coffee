@@ -4,8 +4,7 @@ class Jarvis.Views.ExpensesIndex extends Support.CompositeView
   initialize: ->
     @bindTo(@collection, 'add', @renderExpenses)
     @bindTo(@collection, 'change', @collectionChanged)
-    @bindTo(Jarvis.Services.EventAggregator, 'interval:changed', @intervalChanged)
-    @bindTo(Jarvis.Services.EventAggregator, 'interval:reset', @intervalReset)
+    @bindTo(Jarvis.Services.EventAggregator, 'preferences:filter', @filterExpenses)
     @bindTo(Jarvis.Services.EventAggregator, 'expense:edit', @expenseEdit)
 
   render: ->
@@ -34,12 +33,11 @@ class Jarvis.Views.ExpensesIndex extends Support.CompositeView
     view = new Jarvis.Views.Preferences()
     @renderChildInto(view, @$('.preferences'))
 
-  intervalChanged: (interval) ->
-    filteredCollection = @collection.byInterval(interval)
-    @renderExpenses(filteredCollection)
-
-  intervalReset: ->
-    @renderExpenses()
+  filterExpenses: (filters) ->
+    filtered = @collection
+    filtered = filtered.byInterval(filters.interval) if filters.interval
+    filtered = filtered.byTags(filters.tags) if filters.tags
+    @renderExpenses(filtered)
 
   expenseEdit: (expense) ->
     @renderExpenseForm(expense)

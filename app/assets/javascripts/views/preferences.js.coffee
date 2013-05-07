@@ -3,26 +3,38 @@ class Jarvis.Views.Preferences extends Support.CompositeView
 
   events:
     'change #interval': 'intervalChange'
+    'click #filter': 'filter'
+    'form submit': 'filter'
 
   render: ->
     @$el.html(@template())
     populateSelectOptions.call(this)
+    @renderTagsFilter()
     this
 
   populateSelectOptions = ->
     options = [$('<option>', value: 1, text: 'All time'),
     $('<option>', value: 2, text: 'Pick a month'),
     $('<option>', value: 3, text: 'Pick interval')]
-    @$el.find('select[name=interval]').append(options)
+    @$('select[name=interval]').append(options)
 
   intervalChange: ->
     value = @.$('#interval').val()
     if value == '1'
-      @renderChildInto({render: -> ''}, @.$('#interval_span'))
-      Jarvis.Services.EventAggregator.trigger('interval:reset')
-    else
-      if value == '2'
-        view = new Jarvis.Views.MonthInterval()
-      else if value == '3'
-        view = new Jarvis.Views.CustomInterval()
-      @renderChildInto(view, @.$('#interval_span'))
+      @intervalView = new Jarvis.Views.AllInterval()
+    else if value == '2'
+      @intervalView = new Jarvis.Views.MonthInterval()
+    else if value == '3'
+      @intervalView = new Jarvis.Views.CustomInterval()
+    @renderChildInto(@intervalView, @$('#interval_span'))
+
+  renderTagsFilter: ->
+    @tagsView = new Jarvis.Views.TagsFilter()
+    @renderChildInto(@tagsView, @$('#tags_filter_container'))
+
+  filter: ->
+    interval = @intervalView.interval()
+    tags = @tagsView.tags()
+    Jarvis.Services.EventAggregator.trigger('preferences:filter',
+      { interval: interval, tags: tags })
+    false

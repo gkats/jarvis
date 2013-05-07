@@ -75,3 +75,21 @@ describe 'Jarvis.Models.Expense', ->
 
       it 'returns true', ->
         expect(@expense.byInterval(@interval)).toEqual(true)
+
+  describe '#byTags', ->
+    beforeEach ->
+      @expense = new Jarvis.Models.Expense(tag_list: 'gas, food')
+
+    describe 'when the expense tag list contains one of the tags', ->
+      beforeEach ->
+        @tags = 'food, drinks'
+
+      it 'returns true', ->
+        expect(@expense.byTags(@tags)).toEqual(true)
+
+    describe 'when the expense tag list does not contain any tag', ->
+      beforeEach ->
+        @tags = 'tickets'
+
+      it 'returns false', ->
+        expect(@expense.byTags(@tags)).toEqual(false)
