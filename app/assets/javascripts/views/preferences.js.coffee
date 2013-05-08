@@ -1,6 +1,9 @@
 class Jarvis.Views.Preferences extends Support.CompositeView
   template: JST['preferences']
 
+  initialize: ->
+    @bindTo(Jarvis.Services.EventAggregator, 'expenses:changed', @filter)
+
   events:
     'change #interval': 'intervalChange'
     'click #filter': 'filter'
@@ -33,8 +36,6 @@ class Jarvis.Views.Preferences extends Support.CompositeView
     @renderChildInto(@tagsView, @$('#tags_filter_container'))
 
   filter: ->
-    interval = @intervalView.interval()
-    tags = @tagsView.tags()
     Jarvis.Services.EventAggregator.trigger('preferences:filter',
-      { interval: interval, tags: tags })
+      { interval: @intervalView.interval(), tags: @tagsView.tags() })
     false

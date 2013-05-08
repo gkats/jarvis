@@ -18,10 +18,11 @@ class Jarvis.Views.ExpenseForm extends Support.CompositeView
   saveExpense: (e) ->
     e.preventDefault()
     if setModelAttributes.call(this)
+      newRecord = @model.isNew()
       @model.save({}, {
         wait: true
-        success: => saved.call(this)
-        error: ->
+        success: => saved.call(this, newRecord)
+        error: -> false
       })
     false
 
@@ -33,8 +34,8 @@ class Jarvis.Views.ExpenseForm extends Support.CompositeView
       description: @$('textarea[name=description]').val()
     )
 
-  saved = ->
-    @collection.add @model
+  saved = (newRecord) ->
+    @collection.add @model if newRecord
     @model = new Jarvis.Models.Expense()
     @render()
 
@@ -43,3 +44,6 @@ class Jarvis.Views.ExpenseForm extends Support.CompositeView
     return '' unless modelDate && modelDate.length
     date = new Date(modelDate)
     "#{date.getDate()}/#{date.getMonth() + 1}/#{date.getFullYear()}"
+
+  submitText: ->
+    if @model.isNew() then 'Add' else 'Save'

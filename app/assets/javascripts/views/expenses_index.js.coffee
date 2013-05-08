@@ -43,5 +43,4 @@ class Jarvis.Views.ExpensesIndex extends Support.CompositeView
     @renderExpenseForm(expense)
 
   collectionChanged: ->
-    @renderExpenses()
-    @renderPreferences()
+    Jarvis.Services.EventAggregator.trigger('expenses:changed')

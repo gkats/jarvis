@@ -7,5 +7,5 @@
   <input name="date" type="text" value="<%= this.modelInputDate() %>" placeholder="DD/MM/YYYY" class="datepicker">
   <label>Description</label>
   <textarea name="description" rows="2"><%= expense.escape('description') %></textarea>
-  <button type="submit" class="btn btn-primary">Add</button>
+  <button type="submit" class="btn btn-primary"><%= this.submitText() %></button>
 </fieldset>
