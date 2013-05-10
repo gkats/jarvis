@@ -13,6 +13,7 @@ class Jarvis.Views.Preferences extends Support.CompositeView
     @$el.html(@template())
     populateSelectOptions.call(this)
     @renderTagsFilter()
+    showCurrentMonth.call(this)
     this
 
   populateSelectOptions = ->
@@ -22,7 +23,7 @@ class Jarvis.Views.Preferences extends Support.CompositeView
     @$('select[name=interval]').append(options)
 
   intervalChange: ->
-    value = @.$('#interval').val()
+    value = @$('#interval').val()
     if value == '1'
       @intervalView = new Jarvis.Views.AllInterval()
     else if value == '2'
@@ -39,3 +40,8 @@ class Jarvis.Views.Preferences extends Support.CompositeView
     Jarvis.Services.EventAggregator.trigger('preferences:filter',
       { interval: @intervalView.interval(), tags: @tagsView.tags() })
     false
+
+  showCurrentMonth = ->
+    @$('#interval').val('2')
+    @intervalChange()
+    @filter()
