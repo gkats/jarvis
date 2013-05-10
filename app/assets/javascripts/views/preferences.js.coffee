@@ -1,6 +1,11 @@
 class Jarvis.Views.Preferences extends Support.CompositeView
   template: JST['preferences']
 
+  TIME_FILTERS =
+    all: '1'
+    month: '2'
+    custom: '3'
+
   initialize: ->
     @bindTo(Jarvis.Services.EventAggregator, 'expenses:changed', @filter)
 
@@ -8,6 +13,7 @@ class Jarvis.Views.Preferences extends Support.CompositeView
     'change #interval': 'intervalChange'
     'click #filter': 'filter'
     'form submit': 'filter'
+    'click #filter_reset': 'filterReset'
 
   render: ->
     @$el.html(@template())
@@ -24,11 +30,11 @@ class Jarvis.Views.Preferences extends Support.CompositeView
 
   intervalChange: ->
     value = @$('#interval').val()
-    if value == '1'
+    if value == TIME_FILTERS.all
       @intervalView = new Jarvis.Views.AllInterval()
-    else if value == '2'
+    else if value == TIME_FILTERS.month
       @intervalView = new Jarvis.Views.MonthInterval()
-    else if value == '3'
+    else if value == TIME_FILTERS.custom
       @intervalView = new Jarvis.Views.CustomInterval()
     @renderChildInto(@intervalView, @$('#interval_span'))
 
@@ -42,6 +48,12 @@ class Jarvis.Views.Preferences extends Support.CompositeView
     false
 
   showCurrentMonth = ->
-    @$('#interval').val('2')
+    @$('#interval').val(TIME_FILTERS.month)
     @intervalChange()
+    @filter()
+
+  filterReset: ->
+    @$('#interval').val(TIME_FILTERS.all)
+    @intervalChange()
+    @renderTagsFilter()
     @filter()
