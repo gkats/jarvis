@@ -2,7 +2,7 @@ class Jarvis.Views.ExpensesIndex extends Support.CompositeView
   template: JST['index']
 
   initialize: ->
-    @bindTo(@collection, 'add', @renderExpenses)
+    @bindTo(@collection, 'add', @collectionChanged)
     @bindTo(@collection, 'change', @collectionChanged)
     @bindTo(Jarvis.Services.EventAggregator, 'preferences:filter', @filterExpenses)
     @bindTo(Jarvis.Services.EventAggregator, 'expense:edit', @expenseEdit)
