@@ -1,13 +1,13 @@
 Jarvis::Application.routes.draw do
+  root to: 'main#index'
+
   scope 'api' do
-    resources :expenses, only: [:create, :update, :show]
+    resources :expenses, only: [:create, :update]
   end
 
   if Rails.env.development? || Rails.env.test?
-    Rails.application.routes.draw do
-      mount Jasminerice::Engine => "/jasmine"
-    end
+    mount Jasminerice::Engine => "/jasmine"
   end
 
-  root to: 'main#index'
+  match '*path', :to => 'main#index'
 end

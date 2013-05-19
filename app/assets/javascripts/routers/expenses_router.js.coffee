@@ -1,6 +1,7 @@
 class Jarvis.Routers.ExpensesRouter extends Support.SwappingRouter
   routes:
     '': 'index'
+    'expenses': 'index'
 
   initialize: (options) ->
     @collection = options.collection

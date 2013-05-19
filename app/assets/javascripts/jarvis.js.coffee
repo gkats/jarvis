@@ -10,6 +10,7 @@ root.Jarvis =
   initialize: (data) ->
     expenses = new Jarvis.Collections.Expenses(data.expenses)
     new Jarvis.Routers.ExpensesRouter(collection: expenses)
+    new Jarvis.Routers.ReportsRouter(collection: expenses)
     Jarvis.Services.EventAggregator = _.extend({}, Backbone.Events)
     unless Backbone.history.started
       Backbone.history.start(pushState: true)

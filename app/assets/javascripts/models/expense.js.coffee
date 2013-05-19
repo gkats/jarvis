@@ -19,3 +19,6 @@ class Jarvis.Models.Expense extends Backbone.Model
   byTags: (tags) ->
     own_tags = @get('tag_list').split(', ')
     own_tags.length != _.difference(own_tags, tags.split(', ')).length
+
+  byMonth: (month) ->
+    month == new Date(@get('date')).getMonth()

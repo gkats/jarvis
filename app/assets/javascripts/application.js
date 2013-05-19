@@ -3,6 +3,8 @@
 //= require twitter/bootstrap
 //= require bootstrap-datepicker
 //
+//= require highcharts
+//
 //= require json2
 //= require underscore
 //= require backbone
