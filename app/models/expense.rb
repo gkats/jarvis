@@ -6,7 +6,7 @@ class Expense < ActiveRecord::Base
   validates_presence_of :date
 
   def tag_list
-    tags.map(&:name).join(', ')
+    tags.map(&:name).sort.join(', ')
   end
 
   def tag_list=(names)

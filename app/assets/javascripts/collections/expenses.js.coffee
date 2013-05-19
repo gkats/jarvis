@@ -18,7 +18,6 @@ class Jarvis.Collections.Expenses extends Jarvis.Collections.FilterableCollectio
     _.uniq @pluck('tag_list')
 
   uniqueTagsForMonth: (month) ->
-    # TODO 'band,rehearsal' and 'rehearsal,band' are not unique tags
     @byMonth(month).uniqueTags()
 
   totalPrice: ->
