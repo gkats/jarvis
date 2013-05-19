@@ -93,7 +93,7 @@ class Jarvis.Views.MonthsChart extends Support.CompositeView
       name: "Expenses by tag for #{month}"
       categories: tagCategories
       data: _.map(tagCategories, (tag) =>
-        @collection.byMonth(parseInt(month)).byTags(tag).totalPrice()
+        @collection.byMonth(parseInt(month)).byExactTags(tag).totalPrice()
       )
       color: @chartColor
     }

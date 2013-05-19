@@ -11,7 +11,7 @@ class Jarvis.Views.TagsChart extends Support.CompositeView
 
   chartSeries = ->
     _.map(@collection.uniqueTags(), (tag) =>
-      [tag, @collection.byTags(tag).totalPrice()]
+      [tag, @collection.byExactTags(tag).totalPrice()]
     )
 
   chartOptions = ->

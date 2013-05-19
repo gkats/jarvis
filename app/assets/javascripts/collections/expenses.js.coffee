@@ -11,6 +11,9 @@ class Jarvis.Collections.Expenses extends Jarvis.Collections.FilterableCollectio
   byTags: (tags) ->
     @filtered((expense) -> expense.byTags(tags))
 
+  byExactTags: (tags) ->
+    @filtered((expense) -> expense.byExactTags(tags))
+
   byMonth: (month) ->
     @filtered((expense) -> expense.byMonth(month))
 
