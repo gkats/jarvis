@@ -43,7 +43,9 @@ class Jarvis.Views.ExpenseForm extends Support.CompositeView
     modelDate = @model.escape('date')
     return '' unless modelDate && modelDate.length
     date = new Date(modelDate)
-    "#{date.getDate()}/#{date.getMonth() + 1}/#{date.getFullYear()}"
+    day = date.getDate()
+    month = date.getMonth() + 1
+    "#{if day.length > 1 then '' else 0}#{day}/#{if month.length > 1 then '' else 0}#{month}/#{date.getFullYear()}"
 
   submitText: ->
     if @model.isNew() then 'Add' else 'Save'
