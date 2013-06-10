@@ -39,6 +39,10 @@ body {
   padding-left: 20px;
 }
 
+#user_header a {
+  color: #fff;
+}
+
 textarea:focus, input[type="text"]:focus, input[type="password"]:focus, input[type="datetime"]:focus, input[type="datetime-local"]:focus, input[type="date"]:focus, input[type="month"]:focus, input[type="time"]:focus, input[type="week"]:focus, input[type="number"]:focus, input[type="email"]:focus, input[type="url"]:focus, input[type="search"]:focus, input[type="tel"]:focus, input[type="color"]:focus, .uneditable-input:focus {
 border-color: rgba(221, 72, 20, 0.6);
 box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(221, 72, 20, 0.4);
@@ -80,6 +84,15 @@ tr.expense {
 
 .navbar .logo {
   margin-left: 0px;
+}
+
+.validation-error {
+  font-style: italic;
+  color: @red;
+}
+
+.alert {
+  text-align: center;
 }
 
 // United 2.3.1

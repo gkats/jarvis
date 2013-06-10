@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130420171540) do
+ActiveRecord::Schema.define(:version => 20130610185847) do
 
   create_table "expenses", :force => true do |t|
     t.decimal  "price",       :precision => 8, :scale => 2
@@ -19,7 +19,10 @@ ActiveRecord::Schema.define(:version => 20130420171540) do
     t.string   "description"
     t.datetime "created_at",                                :null => false
     t.datetime "updated_at",                                :null => false
+    t.integer  "user_id"
   end
+
+  add_index "expenses", ["user_id"], :name => "index_expenses_on_user_id"
 
   create_table "taggings", :force => true do |t|
     t.integer  "tag_id"
@@ -36,5 +39,17 @@ ActiveRecord::Schema.define(:version => 20130420171540) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
+
+  create_table "users", :force => true do |t|
+    t.string   "email"
+    t.string   "password_digest"
+    t.datetime "created_at",             :null => false
+    t.datetime "updated_at",             :null => false
+    t.string   "auth_token"
+    t.string   "password_reset_token"
+    t.datetime "password_reset_sent_at"
+  end
+
+  add_index "users", ["email"], :name => "index_users_on_email"
 
 end

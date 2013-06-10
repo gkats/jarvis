@@ -19,6 +19,8 @@ gem 'ejs'
 
 gem 'strong_parameters'
 
+gem 'bcrypt-ruby', '~> 3.0.0'
+
 group :test do
   gem 'cucumber-rails', require: false
 end

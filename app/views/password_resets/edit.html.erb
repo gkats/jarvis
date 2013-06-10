@@ -1,0 +1,19 @@
+<div class="span10 offset1 inner-wrapper">
+  <div class="span4">
+    <%= form_for @user, :url => password_reset_path(params[:id]), html: { class: 'form well' } do |f| %>
+      <legend>Update your password</legend>
+
+      <fieldset>
+        <%= f.label :password %>
+        <%= f.password_field :password %>
+
+        <%= f.label :password_confirmation %>
+        <%= f.password_field :password_confirmation %>
+
+        <div class="actions">
+          <%= f.submit "Update Password", class: 'btn btn-primary' %>
+        </div>
+      </fieldset>
+    <% end %>
+  </div>
+</div>

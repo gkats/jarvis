@@ -1,5 +1,7 @@
 class MainController < ApplicationController
+  before_filter :authorize
+
   def index
-    @expenses = Expense.all
+    @expenses = current_user.expenses
   end
 end

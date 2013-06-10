@@ -1,0 +1,16 @@
+<div class="span10 offset1 inner-wrapper">
+  <div class="span4">
+    <%= form_tag password_resets_path, method: :post, html: { class: 'form well' } do %>
+      <legend>Reset your password</legend>
+
+      <fieldset>
+        <%= label_tag :email %>
+        <%= text_field_tag :email, params[:email] %>
+
+        <div class="actions">
+          <%= submit_tag "Reset Password", class: 'btn btn-primary' %>
+        </div>
+      </fieldset>
+    <% end %>
+  </div>
+</div>

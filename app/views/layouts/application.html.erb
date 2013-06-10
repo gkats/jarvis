@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Jarvis</title>
+  <meta charset="utf-8" />
+  <title>Jarvis :: Your personal expense tracker</title>
   <%= stylesheet_link_tag    "application", :media => "all" %>
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
@@ -16,10 +17,39 @@
         <li><a href="/expenses">Expenses</a></li>
         <li><a href="/reports">Reports</a></li>
       </ul>
-      <p class="subtitle pull-right">Helps track your expenses with a smile</p>
+      <div class="subtitle">Helps track your expenses with a smile
+        <div id="user_header" class="pull-right">
+          <% if current_user %>
+            Hello, <%= current_user.email %>
+            <%= link_to "Log Out", logout_path %>
+          <% else %>
+            Don't have an account? <%= link_to 'Sign up', signup_path %>
+          <% end %>
+        </div>
+    </div>
     </div>
   </div>
 
+  <div class="row-fluid notice">
+    <% if flash[:error] %>
+      <div class="alert alert-error span10 offset1">
+        <button type="button" class="close" data-dismiss="alert">&times</button>
+        <%= flash[:error] %>
+      </div>
+    <% end %>
+    <% if flash[:alert] %>
+      <div class="alert alert-block span10 offset1">
+        <button type="button" class="close" data-dismiss="alert">&times</button>
+        <%= flash[:alert] %>
+      </div>
+    <% end %>
+    <% if flash[:notice] %>
+      <div class="alert alert-success span10 offset1">
+        <button type="button" class="close" data-dismiss="alert">&times</button>
+        <%= flash[:notice] %>
+      </div>
+    <% end %>
+  </div>
   <div class="row-fluid">
     <%= yield %>
   </div>

@@ -1,0 +1,18 @@
+<%= form_for @user, html: { class: 'form well' } do |f| %>
+  <legend>Create a new account</legend>
+
+  <fieldset>
+    <%= f.label :email %>
+    <%= f.text_field :email %>
+
+    <%= f.label :password %>
+    <%= f.password_field :password %>
+
+    <%= f.label :password_confirmation %>
+    <%= f.password_field :password_confirmation %>
+
+    <div class="actions">
+      <%= f.submit "Sign Up", class: "btn btn-primary" %>
+    </div>
+  </fieldset>
+<% end %>

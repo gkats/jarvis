@@ -1,0 +1,22 @@
+<%= form_tag sessions_path, html: { class: 'form well' } do %>
+  <legend>Log In</legend>
+
+  <fieldset>
+    <%= label_tag :email %>
+    <%= text_field_tag :email, params[:email] %>
+
+    <%= label_tag :password %>
+    <%= password_field_tag :password %>
+
+    <%= link_to "forgotten password?", new_password_reset_path %>
+
+    <p>
+      <%= label_tag :remember_me, nil, class: 'checkbox inline' %>
+      <%= check_box_tag :remember_me, 1, params[:remember_me] %>
+    </p>
+
+    <div class="actions">
+      <%= submit_tag "Log In", class: 'btn btn-primary' %>
+    </div>
+  </fieldset>
+<% end %>
