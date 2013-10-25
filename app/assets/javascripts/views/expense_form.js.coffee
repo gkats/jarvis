@@ -13,6 +13,7 @@ class Jarvis.Views.ExpenseForm extends Support.CompositeView
   render: ->
     @$el.html(@template(expense: @model))
     @$('input[name=date]').datepicker(format: 'dd/mm/yyyy')
+    @$('input[name=price]').focus()
     this
 
   saveExpense: (e) ->
